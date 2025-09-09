@@ -1,7 +1,8 @@
 import os
 import google.generativeai as genai #제미나이 모델 API 사용
+import traceback
 from dotenv import load_dotenv #환경 변수 사용
-from tools.current_tiem_tool import get_current_time
+from tools.current_time_tool import get_current_time
 from tools.weather_tool import search_weather
 
 
@@ -13,7 +14,8 @@ genai.configure(api_key=API_KEY)
 # model = genai.GenerativeModel('gemini-pro')
 # model = genai.GenerativeModel('gemini-1.5-pro-latest')
 model = genai.GenerativeModel(
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
+    # 'gemini-2.5-flash',
     tools=[get_current_time, search_weather]
     )
 
@@ -28,11 +30,14 @@ def chat_with_gemini():
             break
 
         try:
-            response = chat.send_message(user_input)
         # 모델이 도구 사용을 제안 했는지 확인
-            if response.tool_calls:
-                tool_call = response.tool.calls[0]
+            response = chat.send_message(user_input)
+            # if response.tool_calls:
+            if hasattr(response, 'tool_calls') and response.tool_calls:
+                tool_call = response.tool_calls[0]
                 tool_name = tool_call.name
+
+                tool_result = None
 
                 if tool_name == 'get_current_time':
                     tool_result = get_current_time()
@@ -47,15 +52,17 @@ def chat_with_gemini():
                     tool_results = [{'name' : tool_name, 'result': tool_result}]
                 )
 
-
-
-            print("Gemini: " ,end=" ")
-            for part in response.parts:
-                # print(part.text, end="")
-                print(part.text)
-            print() #줄바꿈
+            if not response.parts:
+                print("gemini : 죄송합니다. 응답 생성할 수 없습니다.")
+            else:
+                print("Gemini: ", end="")
+                for part in response.parts:
+                    print(part.text, end="")
+                print()
+                    
         except Exception as e:
             print(f"오류가 발생했습니다: {e}")
+            traceback.print_exc()
             break
 
 if __name__ == "__main__":

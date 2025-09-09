@@ -27,11 +27,13 @@ def chat_with_gemini():
     while True:
         user_input = input("나: ")
         if user_input.lower() == '종료':
+            print("ㅡㅡㅡㅡㅡㅡㅡㅡㅡ종료ㅡㅡㅡㅡㅡㅡㅡㅡ")
             break
 
         try:
-        # 모델이 도구 사용을 제안 했는지 확인
             response = chat.send_message(user_input)
+            # 모델이 도구 사용을 제안 했는지 확인 , tool call 기능 확인
+            # API 기술적 한계로 해당 툴 호출 불가 , 소스 내부에 수동으로 생성해야됨 참고
             # if response.tool_calls:
             if hasattr(response, 'tool_calls') and response.tool_calls:
                 tool_call = response.tool_calls[0]
@@ -52,6 +54,10 @@ def chat_with_gemini():
                     tool_results = [{'name' : tool_name, 'result': tool_result}]
                 )
 
+            # 길이가 100 넘을시 5개 삭제
+            if len(chat.history) > 100:
+                chat.history = chat.history[5:]
+
             if not response.parts:
                 print("gemini : 죄송합니다. 응답 생성할 수 없습니다.")
             else:
@@ -64,6 +70,9 @@ def chat_with_gemini():
             print(f"오류가 발생했습니다: {e}")
             traceback.print_exc()
             break
-
+    #대화 기록 확인 (메모리 기능)
+    print("\n-----대화기록-----")
+    for message in chat.history:
+        print(f"역할: {message.role}, 내용 : {message.parts[0].text}")
 if __name__ == "__main__":
     chat_with_gemini()

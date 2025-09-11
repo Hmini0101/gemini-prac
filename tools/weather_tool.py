@@ -1,12 +1,9 @@
 # 날씨 검색 도구
 
+
 def search_weather(location: str):
 
-    weather_data = {
-        '서울' : '맑음, 25도',
-        '부산' : '흐림, 13도',
-        '뉴욕' : '비, 15도'
-    }
+    weather_data = {"서울": "맑음, 25도", "부산": "흐림, 13도", "뉴욕": "비, 15도"}
 
     if location in weather_data:
         return f"{location}의 현재 날씨는 {weather_data[location]}입니다."

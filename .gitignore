@@ -1,1 +1,14 @@
 .env
+
+# 가상 환경 폴더 무시
+/venv/
+
+# Python이 자동으로 생성하는 캐시 파일 무시
+__pycache__/
+
+# Tensorflow Hub가 모델을 저장하는 캐시 폴더 무시
+tfhub_modules/
+.cache/
+
+# VS Code 설정 폴더 무시
+.vscode/

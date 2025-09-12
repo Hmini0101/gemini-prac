@@ -22,11 +22,11 @@
 ---
 
 ## 📂 프로젝트 구조
-프로젝트의 기본 파일 구조는 다음과 같습니다.
-/프로젝트명
-├── .env                  # 환경 변수
-├── .gitignore            # Git 무시 파일
-├── .vscode/              # VS Code 설정
-├── rag_chatbot.py / main.py        # 메인 코드 및 로직
-├── manual.txt            # 데이터 소스
-└── venv/                 # 가상 환경
+프로젝트의 기본 파일 구조는 다음과 같습니다.<br>
+/프로젝트명<br>
+├── .env                  # 환경 변수<br>
+├── .gitignore            # Git 무시 파일<br>
+├── .vscode/              # VS Code 설정<br>
+├── rag_chatbot.py / main.py        # 메인 코드 및 로직<br>
+├── manual.txt            # 데이터 소스<br>
+└── venv/                 # 가상 환경<br>

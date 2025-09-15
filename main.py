@@ -6,7 +6,10 @@ def main():
         chatbot = RAGChatbot(
             api_key_var="GEMINI_API_KEY",
             model_name="gemini-1.5-flash",
-            document_path="manual.txt",
+            data_paths=[
+                "manual.txt",
+                "https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%B4%EC%8D%AC",
+            ],
         )
 
         print("문서기반 챗봇 시작! , '종료' 입력하면 끝납니다.")

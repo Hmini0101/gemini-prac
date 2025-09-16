@@ -65,7 +65,7 @@ class RAGChatbot:
         embeddings = self.embed_model(chunks)
         return chunks, embeddings
 
-    def generate_response(self, user_input):
+    def generate_response(self, user_input, chat_history=[]):
         user_embedding = self.embed_model([user_input])
         similarities = np.dot(user_embedding, np.transpose(self.document_embeddings))
 
@@ -77,9 +77,17 @@ class RAGChatbot:
 
         combined_chunks = "\n\n".join(relevant_chunks)
 
+        history_list = []
+        for msg in chat_history:
+            role = msg["role"]
+            text = msg["parts"][0]["text"]
+            history_list.append(f"{role}: {text}")
+
+        history_string = "\n".join(history_list)
+
         prompt = (
             "다음 참고 자료를 바탕으로 질문에 답변하세요. 만약 참고 자료에 답변이 없다면 "
-            "'참고 자료에 답변이 없습니다.'라고 응답하세요. "
+            "'참고 자료에 답변이 없습니다.'라고 응답하고 너가 인터넷에서 찾아보고 대답해 "
             "참고 자료는 다음과 같습니다.\n\n"
             f"참고 자료: {combined_chunks}\n\n"
             f"질문: {user_input}"

@@ -15,8 +15,11 @@ def initialize_chatbot():
     return chatbot
 
 
+# 챗봇 객체 로드
 chatbot = initialize_chatbot()
-st.title("문서 기반 챗봇 PAGE")
+
+
+# 대화기록관리 (세션상태)
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -34,6 +37,24 @@ if prompt := st.chat_input("질문하세요."):
 
     with st.chat_message("assistant"):
         with st.spinner("생각중..."):
-            response = chatbot.generate_response(prompt)
+
+            if len(st.session_state.messages) > 6:
+                summarization_prompt = f"다음 대화를 한두 문장으로 요약해줘.\n\n대화 내용: {st.session_state.messages}"
+
+                try:
+                    summarized_response = chatbot.model.generate_content(
+                        summarization_prompt
+                    ).text
+                except Exception as e:
+                    summarized_response = "대화 기록 요약 중 오류가 발생했습니다."
+
+                st.session_state.messages = [
+                    {
+                        "role": "assistant",
+                        "content": f"이전 대화가 요약되었습니다. 다음은 요약본입니다: {summarized_response}",
+                    }
+                ]
+
+            response = chatbot.generate_response(prompt, st.session_state.messages)
             st.session_state.messages.append({"role": "assistant", "content": response})
             st.markdown(response)

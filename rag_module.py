@@ -77,14 +77,12 @@ class RAGChatbot:
 
         combined_chunks = "\n\n".join(relevant_chunks)
 
-        history_list = []
+        prompt_parts = []
         for msg in chat_history:
             role = msg["role"]
-            text = msg["parts"][0]["text"]
-            history_list.append(f"{role}: {text}")
-
-        history_string = "\n".join(history_list)
-
+            text = msg["content"]
+            prompt_parts.append(f"{role}: {text}")
+        history_string = "\n".join(prompt_parts)
         prompt = (
             "다음 참고 자료를 바탕으로 질문에 답변하세요. 만약 참고 자료에 답변이 부족하다면,"
             " 당신의 지식을 활용하여 답변을 보충하거나 생성해도 좋습니다. "

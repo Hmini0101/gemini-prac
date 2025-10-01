@@ -31,7 +31,7 @@
 ├── .env                  # 환경 변수<br>
 ├── .gitignore            # Git Ignore 파일<br>
 ├── .vscode/              # VS Code 설정<br>
-├── app.py                # Streamlit 을 이용한 메인코드
+├── app.py                # Streamlit 을 이용한 메인코드<br>
 ├── main.py               # (구)메인 코드<br>
 ├── rag_module.py         # 모듈(기능) 코드<br>
 ├── manual.txt            # 문서내용<br>
